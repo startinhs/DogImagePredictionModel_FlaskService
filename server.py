@@ -7,7 +7,7 @@ import io
 import pandas as pd
 
 app = Flask(__name__)
-model = load_model('modelDogBreeds2000_92_8-7.h5')
+model = load_model('modelDogBreeds.h5')
 
 # Load breeds list
 breeds_df = pd.read_csv('breeds_list.csv')
