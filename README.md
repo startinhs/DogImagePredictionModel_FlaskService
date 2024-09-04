@@ -10,13 +10,13 @@
 
 1. **Clone the Git Repository:**
    ```bash
-   git clone https://github.com/startinhs/PawsomePets_DogBreedClassification
+   git clone https://github.com/startinhs/PawsomePets_DogBreedClassification.git
 
 2. **Install Required Libraries: Open your command line, navigate to the project directory, and run the following command to install the necessary Python libraries:**
     ```bash
     pip install flask numpy pandas keras
 
-3. **Start the Project: In the command line, still within the project directory, run the init.py file (or open comand-line: python init.py). After running, look for this line in your terminal:**
+3. **Start the Project: In the command line, still within the project directory, run the server.py file (or open comand-line: python server.py). After running, look for this line in your terminal:**
     Running on http://127.0.0.1:5000/
 **Copy the URL and paste it into your web browser to open the website.**
 
