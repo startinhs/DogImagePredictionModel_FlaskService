@@ -9,5 +9,7 @@ namespace PawsomePets.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the PawsomePetsUser class
 public class PawsomePetsUser : IdentityUser
 {
+    public string FullName { get; set; }
+    public string Address { get; set; }
 }
 
