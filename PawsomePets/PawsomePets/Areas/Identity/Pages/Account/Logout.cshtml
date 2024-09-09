@@ -1,21 +1,47 @@
 ﻿@page
 @model LogoutModel
-@{
-    ViewData["Title"] = "Log out";
-}
 
-<header>
-    <h1>@ViewData["Title"]</h1>
-    @{
-        if (User.Identity?.IsAuthenticated ?? false)
-        {
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
-            </form>
-        }
-        else
-        {
-            <p>You have successfully logged out of the application.</p>
-        }
-    }
-</header>
+<div class="page_background">
+    <div class="breadcrumb_background">
+        <section class="bread-crumb">
+            <span class="crumb-border"></span>
+            <div class="container">
+                <div class="rows">
+                    <div class="col-xs-12 a-left">
+                        <ul class="breadcrumb">
+                            <li class="home">
+                                <a href="./"><span>Trang chủ</span></a>
+                                <span class="mr_lr">/</span>
+                            </li>
+
+                            <li><strong><span>Đăng xuất</span></strong></li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <section class="d-flex justify-content-center">
+            @{
+                if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <h2 class="text-center">Tạm biệt bạn, hẹn gặp lại!</h2>
+                        <br />
+                        <button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất ngay</button>
+                    </form>
+                }
+                else
+                {
+                    <p>You have successfully logged out of the application.</p>
+                }
+            }
+        </section>
+        <div style="height:200px"></div>
+    </div>
+</div>

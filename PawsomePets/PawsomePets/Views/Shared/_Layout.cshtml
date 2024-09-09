@@ -47,7 +47,7 @@
                             <div class="mini-cart text-xs-center">
                                 <a class="img_hover_cart" href="#" title="Giỏ hàng">
                                     <div class="icon-cart">
-                                        <img src="./assets/img/icon-cart.png">
+                                        <img src="~/img/icon-cart.png">
                                     </div>
                                     <span class="count_item count_item_pr">1</span>
                                 </a>
@@ -98,20 +98,33 @@
                         </svg>
                         <div class="ac_hover">
                             <ul class="account_header">
-
-                                <li>
-                                    <a href="#">Đăng nhập</a>
-                                </li>
-                                <li>
-                                    <a href="#">Đăng ký</a>
-                                </li>
-
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li>
+                                        <a href="#">Tài khoản</a>
+                                    </li>
+                                    <li>
+                                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                            <button>Đăng xuất</button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="./login">Đăng nhập</a>
+                                    </li>
+                                    <li>
+                                        <a href="./register">Đăng ký</a>
+                                    </li>
+                                }
                             </ul>
                         </div>
+
                     </div>
                     <div class="header-search">
                         <div class="icon-search">
-                            <img src="./assets/img/icon-search.png">
+                            <img src="~/img/icon-search.png">
                         </div>
                     </div>
                 </div>
@@ -135,14 +148,14 @@
                     <div class="logo">
 
                         <a href="/" class="logo-wrapper ">
-                            <img src="./assets/img/Pawsome.png">
+                            <img src="~/img/Pawsome.png">
                         </a>
 
                     </div>
                 </div>
                 <a class="cart-mobile-header" href="#" title="Giỏ hàng">
                     <div class="icon-cart">
-                        <img src="./assets/img/icon-cart.png">
+                        <img src="~/img/icon-cart.png">
                     </div>
                     <span class="count_item count_item_pr"></span>
                 </a>
@@ -192,12 +205,26 @@
                         </svg>
                         <ul class="account_mobile">
 
-                            <li>
-                                <a href="#">Đăng nhập</a>
-                            </li>
-                            <li>
-                                <a href="#">Đăng ký</a>
-                            </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    <a href="#">Tài khoản</a>
+                                </li>
+                                <li>
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                        <a>Đăng xuất</a>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="./login">Đăng nhập</a>
+                                </li>
+                                <li>
+                                    <a href="./register">Đăng ký</a>
+                                </li>
+                            }
 
                         </ul>
                     </div>
