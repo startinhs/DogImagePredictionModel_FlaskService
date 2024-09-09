@@ -2,24 +2,38 @@
 using Microsoft.EntityFrameworkCore;
 using PawsomePets.Areas.Identity.Data;
 using PawsomePets.Data;
+
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("PawsomePetsContextConnection") ?? throw new InvalidOperationException("Connection string 'PawsomePetsContextConnection' not found.");
 
-builder.Services.AddDbContext<PawsomePetsContext>(options => options.UseSqlServer(connectionString));
+var connectionString = builder.Configuration.GetConnectionString("PawsomePetsContextConnection")
+    ?? throw new InvalidOperationException("Connection string 'PawsomePetsContextConnection' not found.");
 
-builder.Services.AddDefaultIdentity<PawsomePetsUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<PawsomePetsContext>();
+builder.Services.AddDbContext<PawsomePetsContext>(options =>
+    options.UseSqlServer(connectionString));
 
-builder.Services.AddRazorPages();
-// Add services to the container.
+builder.Services.AddDefaultIdentity<PawsomePetsUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.User.RequireUniqueEmail = true;
+    options.Password.RequiredLength = 6;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<PawsomePetsContext>();
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -34,5 +48,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
+
 app.Run();
