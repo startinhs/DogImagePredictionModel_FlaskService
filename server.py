@@ -120,7 +120,6 @@ def predict():
             }
         else:
             history_data = {
-                "predicted_class": int(predicted_class),
                 "messeger": "Không xác định được, vui lòng chụp đúng ảnh chú chó",
                 "timestamp": datetime.datetime.now()
             }
