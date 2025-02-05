@@ -5,6 +5,8 @@ from keras.src.legacy.preprocessing import image
 from keras.src.applications.inception_v3 import preprocess_input
 import io
 import pandas as pd
+from pymongo import MongoClient
+import datetime
 
 app = Flask(__name__)
 model = load_model('modelDogBreeds.h5')
@@ -89,6 +91,11 @@ def cho_shiba(filename=None):
 def prediction():
     return send_from_directory('PawsomePets', 'prediction.html')
 
+# Kết nối MongoDB
+client = MongoClient("mongodb+srv://tinh:tinh@pawsomepetscluster.hvkej.mongodb.net/?retryWrites=true&w=majority&appName=PawsomePetsCluster")
+mongo_db = client["DogBreedPrediction"]
+history_collection = mongo_db["PredictionHistories"]
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -100,14 +107,32 @@ def predict():
 
         prediction = model.predict(img_array)
         predicted_class = np.argmax(prediction, axis=1)[0]
-
+        confidence = float(np.max(prediction))
+        breed_name = breeds[predicted_class]
+        
+        # Lưu lịch sử vào MongoDB
+        if(confidence>0.1):
+            history_data = {
+                "predicted_class": int(predicted_class),
+                "breed_name": breed_name,
+                "confidence": confidence,
+                "timestamp": datetime.datetime.now()
+            }
+        else:
+            history_data = {
+                "predicted_class": int(predicted_class),
+                "messeger": "Không xác định được, vui lòng chụp đúng ảnh chú chó",
+                "timestamp": datetime.datetime.now()
+            }
+        history_collection.insert_one(history_data)
+        
         return jsonify({
             'predicted_class': int(predicted_class),
-            'breed_name': breeds[predicted_class],
-            'confidence': float(np.max(prediction))
+            'breed_name': breed_name,
+            'confidence': confidence
         })
     except Exception as e:
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=8080, debug=True)
